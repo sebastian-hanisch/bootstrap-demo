@@ -1,7 +1,6 @@
 # Bootstrap: wann Resampling die Verteilung ersetzt – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-bootstrap-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-bootstrap-demo.streamlit.app/)**
 
 Fünfzehntes Stück der Linie **„Monte-Carlo-Schätzung und Varianzreduktion“** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (die Linie wird erst vollständig veröffentlicht). Nachfolger von [abbruchregeln-demo](https://github.com/sebastian-hanisch/abbruchregeln-demo) (Stück 14, Aufhören bei laufender Simulation) und Gegenstück zu den Stücken davor: Bis hier erzeugt die Simulation **neue** Daten aus einem Modell. Hier liegen die Daten **schon da** (ein Lauf, ein Log), und der Bootstrap soll die Unsicherheit einer beliebigen Statistik ohne Formel liefern. Die Demo misst, **wann** das trägt: wie oft die Intervalle die Wahrheit treffen, wenn diese exakt bekannt ist. Vehikel sind log-normale Dauern (schief, Wahrheit in geschlossener Form), die **Zuverlässigkeit der Netze der Reihe** (seltene Ereignisse, π exakt aus der Aufzählung) und ein AR(1)-Prozess (Daten mit Gedächtnis).
 
@@ -139,4 +138,4 @@ Gebaut mit Streamlit, Plotly, NumPy und fpdf2.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Monte-Carlo-Schätzung: vom Schätzer zur Wahl](https://sebastianhanisch.net/konzepte-monte-carlo.html).
