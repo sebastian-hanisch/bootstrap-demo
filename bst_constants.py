@@ -45,7 +45,7 @@ PRESETS = {
 }
 PRESET_HELP = {
     "Standardfall (Voreinstellung)": "Mittelwert log-normaler Daten (σ = 1), 499 Ziehungen: bei kleinem n deckt das Perzentil-Intervall nicht besser als das t-Intervall, und die Fehltreffer liegen fast alle auf einer Seite.",
-    "Schiefe Daten, kleines n": "σ = 1,5 und n = 10: das Perzentil-Intervall deckt nur etwa 71 %; Bootstrap-t holt die Abdeckung zurück, wird aber viele Male so breit.",
+    "Schiefe Daten, kleines n": "σ = 1,5 und n = 10: das Perzentil-Intervall deckt nur etwa 70 %; Bootstrap-t kommt dem Niveau am nächsten, deckt aber auch nur etwa 88 %, und wird viele Male so breit.",
     "Standardabweichung": "Die Standardabweichung (n = 50): der Bootstrap unterschätzt den Schwanz, das Perzentil-Intervall deckt nur rund 60 %.",
     "Seltene Ausfälle": "Gitter 3×3, p = 0,95: die Ausfallwahrscheinlichkeit liegt bei 0,012; bei n = 30 hat der Bootstrap in 70 % der Fälle null Ereignisse und die Breite null.",
     "Daten mit Gedächtnis": "AR(1) mit φ = 0,95: der iid-Bootstrap deckt wie das t-Intervall nur etwa ein Viertel; Blöcke helfen, brauchen aber lange Reihen.",

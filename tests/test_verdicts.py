@@ -85,6 +85,6 @@ def _dep(iid=0.468):
 def test_abhaengigkeitsverdikt():
     kind, text = ev.verdict_dep(_dep())
     assert kind == "warning"
-    for frag in ("φ = 0,80, n = 500", "das t-Intervall deckt 0,465, der iid-Bootstrap 0,468", "l = 5: 0,773, l = 10: 0,846, l = 25: 0,890, l = 50: 0,879", "25,0-mal so groß", "2,6-mal so breit"):
+    for frag in ("φ = 0,80, n = 500", "das t-Intervall deckt 0,465, der iid-Bootstrap 0,468", "l = 5: 0,773, l = 10: 0,846, l = 25: 0,890, l = 50: 0,879", "25,0-mal so groß", "9,0-mal so groß wie bei unabhängigen Daten mit derselben Streuung", "2,6-mal so breit"):
         assert frag in text, frag
     assert ev.verdict_dep(_dep(0.85))[0] == "info" and ev.verdict_dep(_dep(0.849))[0] == "warning"

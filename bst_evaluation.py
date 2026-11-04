@@ -239,5 +239,5 @@ def verdict_dep(ex: dict) -> tuple[str, str]:
     r = ex["rows"]
     blocks = ", ".join(f"l = {l}: {pr(r[f'l{l}']['cov'])}" for l in C.DEP_BLOCKS)
     text = (f"AR(1) mit φ = {de(ex['phi'], 2)}, n = {ex['n']}: das t-Intervall deckt {pr(r['t']['cov'])}, der iid-Bootstrap {pr(r['iid']['cov'])}; Blockbootstrap {blocks}. "
-            f"Die Varianz des Mittels ist {de(ex['var_factor'], 1)}-mal so groß wie bei unabhängigen Daten; der Block mit l = 25 ist {dn(r['l25']['width'] / r['iid']['width'], 1)}-mal so breit wie der iid-Bootstrap.")
+            f"Die Varianz des Mittels ist {de(ex['var_factor'], 1)}-mal so groß wie bei unabhängigen Daten mit der Rauschvarianz der Reihe ({de((1 + ex['phi']) / (1 - ex['phi']), 1)}-mal so groß wie bei unabhängigen Daten mit derselben Streuung wie die Reihe selbst, nach der Theorie); der Block mit l = 25 ist {dn(r['l25']['width'] / r['iid']['width'], 1)}-mal so breit wie der iid-Bootstrap.")
     return ("warning" if r["iid"]["cov"] < 0.85 else "info"), text

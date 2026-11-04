@@ -3,7 +3,7 @@ Sebastian Hanisch - Operations Research und Machine Learning
 
 Stück 15 der Linie "Monte-Carlo-Schätzung und Varianzreduktion": Der Bootstrap ersetzt die unbekannte Verteilung durch die Stichprobe selbst. Das trägt nur so weit, wie die Stichprobe die Verteilung kennt:
 bei schiefen Daten und kleinem n deckt das Perzentil-Intervall nicht besser als das t-Intervall, bei seltenen Ereignissen ist es nahezu das Wald-Intervall, beim Maximum versagt es ganz, bei abhängigen
-Daten braucht es Blöcke; Bootstrap-t holt die Abdeckung zurück und kostet Breite. Wahrheiten sind exakt bekannt, Abdeckungen gemessen.
+Daten braucht es Blöcke; Bootstrap-t kommt dem Niveau am nächsten und kostet Breite. Wahrheiten sind exakt bekannt, Abdeckungen gemessen.
 
 Lauffähig mit: streamlit run app.py
 """
@@ -245,11 +245,11 @@ st.markdown(
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
 | **Die Stichprobe kennt die Verteilung** | Bei schiefen Daten und kleinem n fehlen die großen Werte: das Perzentil-Intervall liegt zu niedrig und deckt nicht besser als das t-Intervall (Experiment 1, Preset »Schiefe Daten, kleines n«). | Stück 1 |
-| **Die Statistik ist glatt** | Beim Maximum deckt der Bootstrap nie (0,000), bei der Standardabweichung und beim 90-%-Quantil schlecht (Experiment 2). | – |
+| **Die Statistik ist glatt** | Beim Maximum deckt das Perzentil-Intervall nie (0,000), bei der Standardabweichung und beim 90-%-Quantil schlecht (Experiment 2). | – |
 | **Es gibt genug Ereignisse** | Bei seltenen Ereignissen ist der Bootstrap nahezu das Wald-Intervall und hat bei null Ereignissen die Breite null (Experiment 3). | Stück 14 |
 | **Genug Ziehungen** | Mit B = 99 sinkt die Abdeckung um rund zwei Punkte, und die Endpunkte sind unscharf (Experiment 4). | – |
 | **Die Daten sind unabhängig** | Bei Abhängigkeit deckt der iid-Bootstrap so schlecht wie das t-Intervall; Blöcke helfen, wenn sie länger sind als die Korrelationslänge (Experiment 5). | Warteschlangen 2 |
-| **Die Intervalle sind gleichwertig** | Bootstrap-t holt die Abdeckung zurück, wird aber bei kleinem n sehr breit; BCa verbessert nur wenig; das umgekehrte Perzentil ist schlechter (Experiment 1). | – |
+| **Die Intervalle sind gleichwertig** | Bootstrap-t kommt dem Niveau am nächsten (bei n = 10 nur 0,88 bis 0,90 statt 0,95), wird aber bei kleinem n sehr breit; BCa verbessert nur wenig; das umgekehrte Perzentil ist schlechter (Experiment 1). | – |
 """
 )
 
@@ -261,7 +261,7 @@ with st.expander("⚠️ Annahmen, Grenzen und bekannte Probleme"):
 **Grenzen.** Gemessen werden **nur einfache Statistiken** (Mittelwert, Median, 90-%-Quantil, Standardabweichung, Maximum), keine Quotienten, Differenzen zweier Gruppen oder Regressionen. Es gibt **keinen parametrischen Bootstrap**, keinen Bayes-Bootstrap und keine Kalibrierung (Doppel-Bootstrap). Bootstrap-t gibt es nur für den Mittelwert, mit der Standardabweichung der Ziehung als Standardfehler.
 Es gibt nur eine schiefe Familie (log-normal) und einen abhängigen Prozess (AR(1)); der Blockbootstrap ist der gleitende, ohne automatische Blocklänge.
 
-**Bekannte Probleme und Unsicherheiten.** Die Abdeckungen beruhen auf 500 Wiederholungen je Zelle (Standardfehler etwa 0,01 bis 0,015); zwei Läufe derselben Zelle mit anderem Seed weichen um bis zu 0,02 ab. Für das Mittel der Bernoulli-Daten ist die Abdeckung exakt gerechnet, nicht simuliert. Die Quellen (Efron 1979, Efron und Tibshirani, Davison und Hinkley, Künsch 1989) stehen im Mathematik-Expander **aus dem Gedächtnis**;
+**Bekannte Probleme und Unsicherheiten.** Die Abdeckungen beruhen auf 500 Wiederholungen je Zelle (Standardfehler etwa 0,01 bis 0,015); zwei Läufe derselben Zelle mit anderem Seed weichen um bis zu 0,03 ab. Für das Mittel der Bernoulli-Daten ist die Abdeckung exakt gerechnet, nicht simuliert. Die Quellen (Efron 1979, Efron und Tibshirani, Davison und Hinkley, Künsch 1989) stehen im Mathematik-Expander **aus dem Gedächtnis**;
 es wurden keine Abstracts gelesen. Die Oberfläche ist mit AppTest geprüft und im Browser angesehen, nicht mit echtem Mausklick auf jedem Gerät.
         """
     )

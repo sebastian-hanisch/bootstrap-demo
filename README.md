@@ -13,13 +13,13 @@ Der Bootstrap ersetzt die unbekannte Verteilung durch die Stichprobe selbst, zie
 
 Vor dem Bau wurden die Hypothesen der Gliederung an Messreihen geprüft (Vormessung im Website-Repo, `docs/planung/monte-carlo-planung/vormessung/`). Was sich geändert hat oder beim Bau dazukam:
 
-- **Das Perzentil-Intervall ist bei kleinem n nicht besser als das t-Intervall,** sondern etwas schlechter: Mittelwert log-normaler Daten (σ = 1), n = 10: Perzentil **0,826**, t **0,862**; bei n = 50: 0,880 gegen 0,878. Die Vermutung „Bootstrap rettet schiefe Daten“ trägt nicht. Erst Bootstrap-t holt die Abdeckung zurück.
-- **Die Fehltreffer liegen fast alle auf einer Seite:** beim Perzentil-Intervall (σ = 1, n = 10) liegt die Wahrheit in 16,4 % der Läufe über dem Intervall und in 1,0 % darunter. Das Intervall ist zu kurz, weil der Bootstrap die lange rechte Flanke nicht kennt.
-- **Bootstrap-t zahlt für die Abdeckung mit der Breite:** n = 10, σ = 1: 0,902 bei mittlerer Breite 4,58 gegen 1,94 beim Perzentil; bei σ = 1,5: 0,876 bei 29,3 gegen 5,2.
+- **Das Perzentil-Intervall ist bei kleinem n nicht besser als das t-Intervall,** sondern etwas schlechter: Mittelwert log-normaler Daten (σ = 1), n = 10: Perzentil **0,826**, t **0,862** (andere Ströme und eine unabhängige Kontrolle: etwa 0,80 und 0,84); bei n = 50 etwa gleichauf: 0,880 gegen 0,878. Die Vermutung „Bootstrap rettet schiefe Daten“ trägt nicht. Bootstrap-t kommt dem Niveau am nächsten (n = 10: 0,902 bei σ = 1, 0,876 bei σ = 1,5, nominell 0,95).
+- **Die Fehltreffer liegen fast alle auf einer Seite:** beim Perzentil-Intervall (σ = 1, n = 10) liegt die Wahrheit in 16,4 % der Läufe über dem Intervall (andere Ströme: 18 bis 19 %) und in 1,0 % darunter. Das Intervall ist zu kurz, weil der Bootstrap die lange rechte Flanke nicht kennt.
+- **Bootstrap-t zahlt für die Abdeckung mit der Breite:** n = 10, σ = 1: 0,902 bei mittlerer Breite 4,58 gegen 1,94 beim Perzentil; bei σ = 1,5: 0,876 bei 29,3 gegen 5,2 (die mittlere Breite von Bootstrap-t ist wegen weniger riesiger Intervalle nur grob bestimmt).
 - **Nicht jede Statistik trägt:** Standardabweichung (n = 50) 0,586 beim Perzentil, 90-%-Quantil 0,884, Median 0,946; das **Maximum** einer Gleichverteilung deckt mit dem Perzentil-Intervall **nie** (0,000), weil in 63,6 % der Bootstrap-Stichproben dasselbe Maximum steht wie in der Stichprobe.
 - **Seltene Ereignisse:** der Bootstrap für eine Wahrscheinlichkeit ist exakt über die Binomialverteilung berechenbar. Bei π = 0,0118 (Gitter 3×3, p = 0,95) und n = 30 hat die Stichprobe in **70,0 %** der Fälle null Ereignisse, die Breite ist null, die Abdeckung **0,300**. Wilson hält 0,951.
-- **Zu wenige Ziehungen:** B = 19 verliert beim Perzentil-Intervall rund 0,05 Abdeckung gegenüber B = 999, die Endpunkte streuen von Lauf zu Lauf um 10 bis 15 % der Breite.
-- **Abhängige Daten:** der iid-Bootstrap deckt bei AR(1) mit φ = 0,8 und n = 500 nur etwa die Hälfte (0,510), der gleitende Blockbootstrap mit Blocklänge 25 kommt auf 0,900, aber bei 2,6-facher Breite.
+- **Zu wenige Ziehungen:** B = 19 verliert beim Perzentil-Intervall etwa 0,08 Abdeckung gegenüber B = 999, B = 99 etwa 0,02 (Kontrolle mit gemeinsamen Datensätzen; die Tabelle unten lässt die Zeilen auf verschiedenen Datensätzen laufen, ihre Differenz hat einen Standardfehler von etwa 0,02), die Endpunkte streuen von Lauf zu Lauf um 10 bis 15 % der Breite.
+- **Abhängige Daten:** der iid-Bootstrap deckt bei AR(1) mit φ = 0,8 und n = 500 nur etwa die Hälfte (0,510), der gleitende Blockbootstrap mit Blocklänge 25 kommt auf 0,900, aber bei 2,6-facher Breite (die wahre Standardabweichung des Mittels ist etwa das 3-Fache der iid-Schätzung, daher deckt auch dieser nur etwa 0,9).
 - **Kein scipy zur Laufzeit:** die inverse Normalverteilung (Acklam mit Halley-Schritt) und die t-Verteilung (endliche Reihe plus Bisektion) sind eigene Näherungen, gegen `scipy.stats` bis 1e-8 (relativ) geprüft; die Bootstrap-Stichproben kommen aus SplitMix64-Strömen.
 
 ## Modell
@@ -50,9 +50,9 @@ Alle Zahlen: Strom 39, `tests/test_claims.py` rechnet sie nach (Abdeckungen sind
 | 200 | 0,882 | 0,892 | 0,858 | 0,920 | 0,896 |
 
 - **Weniger Schiefe ist leichter:** σ = 0,5, n = 10: Perzentil 0,880, t 0,922; n = 50: 0,922.
-- **Breiten (σ = 1,0, n = 10):** Perzentil 1,94, Bootstrap-t 4,58 (2,4-fach). **σ = 1,5, n = 10:** Perzentil 5,22, Bootstrap-t 29,26 (5,6-fach); bei n = 20 etwa das 2,9-Fache.
+- **Breiten (σ = 1,0, n = 10):** Perzentil 1,94, Bootstrap-t 4,58 (2,4-fach). **σ = 1,5, n = 10:** Perzentil 5,22, Bootstrap-t 29,26 (5,6-fach; in einer Kontrollrechnung bis 7-fach, weil wenige riesige Intervalle den Mittelwert bestimmen); bei n = 20 etwa das 2,9-Fache (Kontrolle: 3,8).
 - **Fehltreffer rechts** (Perzentil, σ = 1, n = 10): 0,164 gegen links 0,010.
-- **Schiefe Daten, kleines n** (σ = 1,5, n = 10): das Perzentil-Intervall deckt nur etwa 71 % (0,716).
+- **Schiefe Daten, kleines n** (σ = 1,5, n = 10): das Perzentil-Intervall deckt nur etwa 70 % (0,716 in diesem Strom, 0,69 in anderen).
 - **Andere Statistiken** (σ = 1, n = 50, B = 499; Perzentil / basic / BCa): Mittelwert 0,882 / 0,856 / 0,910; Median 0,946 / 0,854 / 0,944; 90-%-Quantil 0,884 / 0,748 / 0,926; Standardabweichung 0,586 / 0,614 / 0,670; Maximum einer Gleichverteilung: Perzentil 0,000, basic 0,860, in 63,6 % der Ziehungen dasselbe Maximum. Bei σ = 1,5 und n = 10: Standardabweichung 0,238, Median 0,966.
 - **Standardabweichung und 90-%-Quantil gegen n** (B = 999, Perzentil, n = 10 / 20 / 50 / 100 / 200): Standardabweichung 0,412 / 0,536 / 0,582 / 0,682 / 0,742; 90-%-Quantil 0,688 / 0,860 / 0,880 / 0,928 / 0,932; BCa hilft beim Quantil (n = 50: 0,932 gegen 0,888), kaum bei der Standardabweichung (0,680).
 - **Seltene Ereignisse, exakt** (Perzentil / Wilson / Wald; Anteil Stichproben ohne Ereignis):
@@ -71,7 +71,7 @@ Alle Zahlen: Strom 39, `tests/test_claims.py` rechnet sie nach (Abdeckungen sind
 - **Nur einfache Statistiken** (Mittelwert, Median, 90-%-Quantil, Standardabweichung, Maximum); keine Quotienten, Regressionen oder Differenzen zweier Gruppen. Bootstrap-t gibt es nur für den Mittelwert, mit der Stichprobenstandardabweichung der Ziehung als Standardfehler.
 - **Kein parametrischer Bootstrap, kein Bayes-Bootstrap, kein Doppel-Bootstrap, keine Kalibrierung** der Intervalle.
 - **Eine schiefe Familie** (log-normal) und **ein abhängiger Prozess** (AR(1)); gleitender Blockbootstrap, kein stationärer Bootstrap, keine automatische Blocklänge.
-- **Die Abdeckungen sind Anteile aus 500 (abhängige Daten: 200) Wiederholungen** und auf ±0,015 (±0,03) genau; ein anderer Strom verschiebt einzelne Zellen um bis zu 0,02 (in der Vormessung: Mittelwert bei n = 50, σ = 1 mit 0,906 gegen 0,883 bei anderem Strom).
+- **Die Abdeckungen sind Anteile aus 500 (abhängige Daten: 200) Wiederholungen** und auf ±0,015 (±0,03) genau; ein anderer Strom verschiebt einzelne Zellen um bis zu 0,03 (in der Vormessung: Mittelwert bei n = 50, σ = 1 mit 0,906 gegen 0,883 bei anderem Strom).
 - **Die Fehltreffer rechts und links stammen aus denselben Läufen** wie die Abdeckung.
 - **Der Bootstrap für Bernoulli-Daten ist exakt gerechnet,** nicht simuliert (eine Eigenschaft der Zählstatistik); ein Bootstrap mit endlichem B hätte zusätzlich das Rauschen aus Experiment 4.
 - **Quellen nur aus dem Gedächtnis** (Efron 1979; Efron und Tibshirani; Davison und Hinkley; Künsch 1989 für Blöcke); es wurde keine Quelle im Wortlaut gelesen. Die BCa-Formeln stehen im 📐-Expander so, wie sie hier implementiert und gegen `scipy.stats.bootstrap` geprüft sind.
