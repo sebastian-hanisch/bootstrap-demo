@@ -83,6 +83,19 @@ Weiter unten: **🔬 fünf Experimente**, **🧪 Spielwiese**, **🚧 Wo die Ann
 """
 )
 
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/bootstrap-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Der **Bootstrap** beantwortet die Frage, wie sicher eine Kennzahl ist, die aus einer einzigen Stichprobe stammt, etwa ein Durchschnitt. Er behandelt die vorhandenen Werte, als wären sie die ganze Wirklichkeit, zieht daraus immer wieder neue Stichproben mit Zurücklegen und liest die Streuung der Kennzahl über diese Ziehungen ab. Daraus entsteht ein Intervall.
+
+Ob das Intervall hält, was es verspricht, prüft die Demo. Bei erfundenen Daten ist die Wahrheit bekannt, und die Demo zählt, wie oft das Intervall sie enthält. Bei schiefen Daten mit wenigen Werten, bei Kennzahlen wie dem Maximum, bei seltenen Ereignissen, bei zu wenigen Ziehungen und bei Daten mit Gedächtnis fällt dieser Anteil unter das versprochene Niveau.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/bootstrap-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
+
 with st.expander("So funktioniert der Bootstrap", expanded=True):
     st.markdown(
         """
@@ -269,6 +282,25 @@ es wurden keine Abstracts gelesen. Die Oberfläche ist mit AppTest geprüft und 
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/bootstrap-erklaert.json, nicht von Hand ändern)
+    st.markdown(
+        r"""
+**Lesehilfe.** Gegeben ist eine Stichprobe $x_1,\dots,x_n$ und eine Kennzahl $\theta$, die daraus berechnet wird. Gesucht ist ein Intervall für die wahre Kennzahl aus $B$ Ziehungen mit Zurücklegen, und der Anteil der Fälle, in denen es die Wahrheit enthält (die Abdeckung).
+
+| Symbol | Bedeutung |
+|---|---|
+| $n$, $B$ | Umfang der Stichprobe bzw. Zahl der Ziehungen mit Zurücklegen |
+| $\hat\theta$, $\theta^*$ | Kennzahl der Stichprobe bzw. einer gezogenen Stichprobe |
+| $q_\gamma$ | das $\gamma$-Quantil der gezogenen Kennzahlen |
+| $\alpha$ | Irrtumsniveau; das Intervall hat das Niveau $1-\alpha$ |
+| $z_0$, $a$ | Verzerrungskorrektur bzw. Beschleunigung des BCa-Intervalls |
+| $S$, $\pi$ | Zahl der Ausfälle in der Stichprobe bzw. die wahre Ausfallwahrscheinlichkeit |
+| $\varphi$ | Abhängigkeit von Wert zu Wert im AR(1)-Prozess ($0$ heißt unabhängig) |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/bootstrap-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
     st.markdown(
         r"""
 **Bootstrap.** Aus $x_1,\dots,x_n$ ($F_n$ die empirische Verteilung, Gewicht $1/n$) werden $B$ Stichproben $x^{*b}$ mit Zurücklegen gezogen, $\theta^{*b}=\theta(x^{*b})$. Für den Mittelwert ist die Bootstrap-Verteilung exakt: $\mathbb E^*\bar x^*=\bar x$, $\operatorname{Var}^*\bar x^*=\hat\sigma^2/n$ mit $\hat\sigma^2=\frac1n\sum(x_i-\bar x)^2$.
