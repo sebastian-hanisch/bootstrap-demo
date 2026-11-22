@@ -1,7 +1,7 @@
 """Bootstrap: wann Resampling die Verteilung ersetzt - interaktive Konzept-Demo
 Sebastian Hanisch - Operations Research und Machine Learning
 
-Stück 15 der Linie "Monte-Carlo-Schätzung und Varianzreduktion": Der Bootstrap ersetzt die unbekannte Verteilung durch die Stichprobe selbst. Das trägt nur so weit, wie die Stichprobe die Verteilung kennt:
+Stück 15 der Linie "Monte-Carlo-Schätzung und Varianzreduktion": Der Bootstrap ersetzt die unbekannte Verteilung durch die Stichprobe selbst. Das gilt nur so weit, wie die Stichprobe die Verteilung kennt:
 bei schiefen Daten und kleinem n deckt das Perzentil-Intervall nicht besser als das t-Intervall, bei seltenen Ereignissen ist es nahezu das Wald-Intervall, beim Maximum versagt es ganz, bei abhängigen
 Daten braucht es Blöcke; Bootstrap-t kommt dem Niveau am nächsten und kostet Breite. Wahrheiten sind exakt bekannt, Abdeckungen gemessen.
 
@@ -76,7 +76,7 @@ with st.container(key="kopf"):
 st.markdown(
     """
 Der **Bootstrap** ersetzt die unbekannte Verteilung durch die **Stichprobe selbst** (jede Beobachtung mit Gewicht 1/n) und zieht daraus mit Zurücklegen neue Stichproben; die Verteilung der Statistik über diese Ziehungen soll die wahre Stichprobenverteilung ersetzen.
-Das lohnt, wenn die Daten schon da sind und man die Unsicherheit einer **beliebigen Statistik** ohne Formel will. Es trägt aber nur so weit, wie die Stichprobe die Verteilung **kennt**: bei **schiefen Daten und kleinem n** deckt das Perzentil-Intervall nicht besser als das t-Intervall,
+Das lohnt, wenn die Daten schon da sind und man die Unsicherheit einer **beliebigen Statistik** ohne Formel will. Es funktioniert aber nur so weit, wie die Stichprobe die Verteilung **kennt**: bei **schiefen Daten und kleinem n** deckt das Perzentil-Intervall nicht besser als das t-Intervall,
 bei **seltenen Ereignissen** ist es nahezu das Wald-Intervall (Breite null ohne Ereignis), beim **Maximum** versagt es ganz, bei **abhängigen Daten** braucht es Blöcke. Gemessen wird die Abdeckung der 95-%-Intervalle; die Wahrheit ist exakt bekannt.
 
 Weiter unten: **🔬 fünf Experimente**, **🧪 Spielwiese**, **🚧 Wo die Annahmen enden** und die Expander **⚠️ Annahmen, Grenzen und bekannte Probleme** und **📐 Mathematische Formulierung**.
@@ -89,7 +89,7 @@ with st.expander("💬 In einfachen Worten"):
         """
 Der **Bootstrap** beantwortet die Frage, wie sicher eine Kennzahl ist, die aus einer einzigen Stichprobe stammt, etwa ein Durchschnitt. Er behandelt die vorhandenen Werte, als wären sie die ganze Wirklichkeit, zieht daraus immer wieder neue Stichproben mit Zurücklegen und liest die Streuung der Kennzahl über diese Ziehungen ab. Daraus entsteht ein Intervall.
 
-Ob das Intervall hält, was es verspricht, prüft die Demo. Bei erfundenen Daten ist die Wahrheit bekannt, und die Demo zählt, wie oft das Intervall sie enthält. Bei schiefen Daten mit wenigen Werten, bei Kennzahlen wie dem Maximum, bei seltenen Ereignissen, bei zu wenigen Ziehungen und bei Daten mit Gedächtnis fällt dieser Anteil unter das versprochene Niveau.
+Ob das Intervall hält, was es verspricht, prüft die Demo. Bei erfundenen Daten ist die Wahrheit bekannt, und die Demo zählt, wie oft das Intervall sie enthält. Bei schiefen Daten mit wenigen Werten, bei Kennzahlen wie dem Maximum, bei seltenen Ereignissen, bei zu wenigen Ziehungen und bei abhängigen Daten fällt dieser Anteil unter das versprochene Niveau.
 
 [Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/bootstrap-erklaert.html)
         """
@@ -107,7 +107,7 @@ Aus einer Stichprobe x₁, …, xₙ zieht man B-mal n Werte **mit Zurücklegen*
 4. **BCa:** Perzentile, korrigiert um eine Verzerrung z₀ (Anteil θ* < θ̂) und eine Beschleunigung a (aus dem Jackknife).
 5. **Zum Vergleich:** das klassische **t-Intervall** (Mittelwert), bei Bernoulli **Wilson** und **Wald**, bei abhängigen Daten der **gleitende Blockbootstrap** (Blöcke der Länge l werden zusammengesetzt statt einzelner Werte).
 
-Die Daten sind **log-normale Dauern** exp(σZ) (schief; σ regelt die Schiefe), die **Ausfälle eines Netzes** (seltene Ereignisse) und ein **AR(1)-Prozess** (Daten mit Gedächtnis); ihre Wahrheit ist exakt bekannt.
+Die Daten sind **log-normale Dauern** exp(σZ) (schief; σ regelt die Schiefe), die **Ausfälle eines Netzes** (seltene Ereignisse) und ein **AR(1)-Prozess** (abhängige Daten); ihre Wahrheit ist exakt bekannt.
         """
     )
 
@@ -121,7 +121,7 @@ with st.sidebar:
     st.header("⚙️ Einstellungen")
     st.markdown("**Daten und Statistik**")
     stat = st.selectbox("Statistik", options("stat_select"), format_func=C.STATS.get, key="stat_select", help="Welche Größe aus der Stichprobe geschätzt wird; Bootstrap-t gibt es nur für den Mittelwert.")
-    sigma = st.select_slider("Schiefe σ der log-normalen Daten", options("sigma_select"), key="sigma_select", format_func=_g, help="Daten exp(σZ): je größer σ, desto schiefer und schwerer der rechte Schwanz.")
+    sigma = st.select_slider("Schiefe σ der log-normalen Daten", options("sigma_select"), key="sigma_select", format_func=_g, help="Daten exp(σZ): je größer σ, desto schiefer und schwerer der rechte Tail.")
     n = st.select_slider("Stichprobengröße n (Experimente 2 und 4)", options("n_select"), key="n_select", help="Experiment 1 zeigt alle Größen; die Experimente 2 und 4 benutzen diese.")
     b = st.select_slider("Bootstrap-Ziehungen B (Experimente 1 und 2)", options("b_select"), key="b_select", help="Zahl der Ziehungen mit Zurücklegen je Stichprobe.")
     st.markdown("**Seltene Ereignisse und Abhängigkeit**")
@@ -214,7 +214,7 @@ if st.session_state.get("b_done"):
     getattr(st, kind)(text)
 
 st.markdown("---")
-st.subheader("🔬 Experiment 5: Daten mit Gedächtnis")
+st.subheader("🔬 Experiment 5: Abhängige Daten")
 st.caption(f"AR(1)-Daten x_t = φ x_(t−1) + ε_t mit φ = {_g(settings.phi)}, n = {C.DEP_N}, Wahrheit μ = 0, B = {C.DEP_B}, {C.DEP_R} Wiederholungen. Der iid-Bootstrap mischt die Werte und zerstört die Abhängigkeit; der **gleitende Blockbootstrap** zieht Blöcke der Länge l.")
 if st.button("▶ Messung starten", key="run_dep"):
     st.session_state["dep_done"] = True
